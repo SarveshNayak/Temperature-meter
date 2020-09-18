@@ -5,10 +5,6 @@ void main() {
     debugShowCheckedModeBanner: false,
     title: "MY TEMPERATURER APP",
     home: Temp(),
-    //theme: ThemeData(
-    // primaryColor: Colors.red[700],
-    // accentColor: Colors.red[700],
-    // scaffoldBackgroundColor: Colors.black),
   ));
 }
 
@@ -31,7 +27,6 @@ class _Tempe extends State<Temp> {
   var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    // TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -100,7 +95,6 @@ class _Tempe extends State<Temp> {
                   padding: EdgeInsets.only(
                       top: mar - 5.0, bottom: mar - 5.0, left: mar, right: mar),
                   child: TextFormField(
-                    // style: textStyle,
                     controller: valueController,
                     keyboardType: TextInputType.number,
                     validator: (String val) {
@@ -112,7 +106,6 @@ class _Tempe extends State<Temp> {
                     decoration: InputDecoration(
                         labelText: "Enter The Value",
                         hintText: "for eg -5,12.5 etc",
-                        //labelStyle: textStyle,
                         focusColor: Colors.black,
                         errorStyle: TextStyle(
                           color: Colors.red[900],
