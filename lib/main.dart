@@ -5,11 +5,10 @@ void main() {
     debugShowCheckedModeBanner: false,
     title: "MY TEMPERATURER APP",
     home: Temp(),
-    theme: ThemeData(
-      primaryColor: Colors.black,
-      accentColor: Colors.white,
-      scaffoldBackgroundColor: Colors.red[800],
-    ),
+    //theme: ThemeData(
+    // primaryColor: Colors.red[700],
+    // accentColor: Colors.red[700],
+    // scaffoldBackgroundColor: Colors.black),
   ));
 }
 
@@ -22,79 +21,86 @@ class Temp extends StatefulWidget {
 
 class _Tempe extends State<Temp> {
   final mar = 10.0;
-  TextEditingController inputTempController = TextEditingController();
-  TextEditingController outputTempController = TextEditingController();
+  String result = "";
   TextEditingController valueController = TextEditingController();
   var displayResult = "";
+  var units1 = ['input unit', 'celsius', 'fahrenheit', 'kelvin'];
+  var units2 = ['output unit', 'celsius', 'fahrenheit', 'kelvin'];
+  var currentItem1 = "input unit";
+  var currentItem2 = "output unit";
   var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
+    // TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text("TEMPERATURE METER"),
       ),
       body: Form(
         key: formKey,
-        //color: Colors.red[800],
         child: Padding(
             padding: EdgeInsets.all(mar - mar),
             child: ListView(
               children: [
                 getImage(),
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: mar - 5, bottom: mar - 5, left: mar, right: mar),
-                  child: TextFormField(
-                    style: textStyle,
-                    controller: inputTempController,
-                    validator: (String val) {
-                      if (val.isEmpty) {
-                        return "PLEASE ENTER THE INPUT";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        labelText: "Input Temp",
-                        hintText: "i.e celsius,kelvin or fahrenheit",
-                        labelStyle: textStyle,
-                        errorStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13.00,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                  ),
-                ),
+                    padding: EdgeInsets.only(
+                        top: mar - 5.0,
+                        bottom: mar - 5.0,
+                        left: mar,
+                        right: mar),
+                    child: Container(
+                        padding: EdgeInsets.only(left: 10.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(color: Colors.grey)),
+                        child: DropdownButton<String>(
+                          dropdownColor: Colors.white,
+                          isExpanded: true,
+                          items: units1.map((String dropDownStringItem) {
+                            return DropdownMenuItem(
+                                value: dropDownStringItem,
+                                child: Text(dropDownStringItem));
+                          }).toList(),
+                          onChanged: (String value1) {
+                            setState(() {
+                              this.currentItem1 = value1;
+                            });
+                          },
+                          value: currentItem1,
+                        ))),
+                Padding(
+                    padding: EdgeInsets.only(
+                        top: mar - 5.0,
+                        bottom: mar - 5.0,
+                        left: mar,
+                        right: mar),
+                    child: Container(
+                        padding: EdgeInsets.only(left: 10.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(color: Colors.grey)),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          dropdownColor: Colors.white,
+                          items: units2.map((String dropDownStringItem) {
+                            return DropdownMenuItem(
+                                value: dropDownStringItem,
+                                child: Text(dropDownStringItem));
+                          }).toList(),
+                          onChanged: (String value1) {
+                            setState(() {
+                              this.currentItem2 = value1;
+                            });
+                          },
+                          value: currentItem2,
+                        ))),
                 Padding(
                   padding: EdgeInsets.only(
                       top: mar - 5.0, bottom: mar - 5.0, left: mar, right: mar),
                   child: TextFormField(
-                    style: textStyle,
-                    controller: outputTempController,
-                    validator: (String val) {
-                      if (val.isEmpty) {
-                        return "PLEASE ENTER THE OUTPUT";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        labelText: "Output Temp",
-                        hintText: "i.e celsius,kelvin or fahrenheit",
-                        labelStyle: textStyle,
-                        errorStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13.00,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: mar - 5.0, bottom: mar - 5.0, left: mar, right: mar),
-                  child: TextFormField(
-                    style: textStyle,
+                    // style: textStyle,
                     controller: valueController,
                     keyboardType: TextInputType.number,
                     validator: (String val) {
@@ -106,9 +112,10 @@ class _Tempe extends State<Temp> {
                     decoration: InputDecoration(
                         labelText: "Enter The Value",
                         hintText: "for eg -5,12.5 etc",
-                        labelStyle: textStyle,
+                        //labelStyle: textStyle,
+                        focusColor: Colors.black,
                         errorStyle: TextStyle(
-                          color: Colors.white,
+                          color: Colors.red[900],
                           fontSize: 13.00,
                         ),
                         border: OutlineInputBorder(
@@ -135,7 +142,7 @@ class _Tempe extends State<Temp> {
                                 onPressed: () {
                                   setState(() {
                                     if (formKey.currentState.validate()) {
-                                      this.displayResult = calculation();
+                                      calculation();
                                     }
                                   });
                                 })),
@@ -144,6 +151,7 @@ class _Tempe extends State<Temp> {
                         ),
                         Expanded(
                             child: RaisedButton(
+                                color: Colors.white,
                                 elevation: 6.00,
                                 child: Text(
                                   "Reset",
@@ -159,7 +167,7 @@ class _Tempe extends State<Temp> {
                     )),
                 Padding(
                   padding: EdgeInsets.all(mar - 5.0),
-                  child: Text(this.displayResult),
+                  child: Text(this.result),
                 )
               ],
             )),
@@ -181,54 +189,53 @@ class _Tempe extends State<Temp> {
   }
 
   String calculation() {
-    String input = inputTempController.text;
-    String output = outputTempController.text;
     double value = double.tryParse(valueController.text);
     double total;
-    String degree = "celsius";
-    String far = "fahrenheit";
-    String kel = "kelvin";
-    double a1;
-    double a2;
-    double a3;
-    for (a1 = 1; a1 > 0 && input == degree; a1--) {
-      if (output == far) {
-        total = (value * 1.8) + 32;
-      } else if (output == kel) {
+
+    if (currentItem1 == "celsius") {
+      if (currentItem2 == "kelvin") {
         total = value + 273.15;
+        result = "Temperature is $total $currentItem2";
+      } else if (currentItem2 == "fahrenheit") {
+        total = (value * 1.8) + 32;
+        result = "Temperature is $total $currentItem2";
       } else {
         total = value;
+        result = "Temperature is $total $currentItem2";
       }
-    }
-
-    for (a2 = 1; a2 > 0 && input == far; a2--) {
-      if (output == degree) {
-        total = (value - 32) / 1.8;
-      } else if (output == kel) {
-        total = (value + 459.67) / 1.8;
-      } else {
-        total = value;
-      }
-    }
-
-    for (a3 = 1; a3 > 0 && input == kel; a3--) {
-      if (output == far) {
-        total = (value * 1.8) - 459.67;
-      } else if (output == degree) {
+    } else if (currentItem1 == "kelvin") {
+      if (currentItem2 == "celsius") {
         total = value - 273.15;
+        result = "Temperature is $total $currentItem2";
+      } else if (currentItem2 == "fahrenheit") {
+        total = (value * 1.8) - 459.67;
+        result = "Temperature is $total $currentItem2";
       } else {
         total = value;
+        result = "Temperature is $total $currentItem2";
       }
+    } else if (currentItem1 == "fahrenheit") {
+      if (currentItem2 == "kelvin") {
+        total = (value + 459.67) / 1.8;
+        result = "Temperature is $total $currentItem2";
+      } else if (currentItem2 == "celsius") {
+        total = (value - 32) / 1.8;
+        result = "Temperature is $total $currentItem2";
+      } else {
+        total = value;
+        result = "Temperature is $total $currentItem2";
+      }
+    } else {
+      result = "INVALID UNITS";
     }
 
-    String result = "Temperature is $total $output";
     return result;
   }
 
   void resetFunction() {
-    inputTempController.text = "";
-    outputTempController.text = "";
+    currentItem1 = "celsius";
+    currentItem2 = "celsius";
     valueController.text = "";
-    displayResult = "";
+    result = "";
   }
 }
