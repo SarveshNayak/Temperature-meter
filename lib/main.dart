@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,72 +30,95 @@ class _Tempe extends State<Temp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text("TEMPERATURE METER"),
-      ),
-      body: Form(
-        key: formKey,
-        child: Padding(
-            padding: EdgeInsets.all(mar - mar),
-            child: ListView(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Text("TEMPERATURE METER"),
+        ),
+        body: Container(
+          child: Column(children: [
+            getImage(),
+            Row(
               children: [
-                getImage(),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: mar - 5.0,
-                        bottom: mar - 5.0,
-                        left: mar,
-                        right: mar),
-                    child: Container(
-                        padding: EdgeInsets.only(left: 10.0),
+                Form(
+                  key: formKey,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.03,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey)),
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(width: 1, color: Colors.grey),
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.only(left: 10.00),
                         child: DropdownButton<String>(
-                          dropdownColor: Colors.white,
                           isExpanded: true,
                           items: units1.map((String dropDownStringItem) {
                             return DropdownMenuItem(
-                                value: dropDownStringItem,
-                                child: Text(dropDownStringItem));
+                              value: dropDownStringItem,
+                              child: Text(dropDownStringItem),
+                            );
                           }).toList(),
-                          onChanged: (String value1) {
+                          onChanged: (String newValueSelected) {
                             setState(() {
-                              this.currentItem1 = value1;
+                              this.currentItem1 = newValueSelected;
                             });
                           },
                           value: currentItem1,
-                        ))),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: mar - 5.0,
-                        bottom: mar - 5.0,
-                        left: mar,
-                        right: mar),
-                    child: Container(
-                        padding: EdgeInsets.only(left: 10.0),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.04,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey)),
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          dropdownColor: Colors.white,
-                          items: units2.map((String dropDownStringItem) {
-                            return DropdownMenuItem(
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(width: 1, color: Colors.grey),
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.only(left: 10.00),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            items: units2.map((String dropDownStringItem) {
+                              return DropdownMenuItem(
                                 value: dropDownStringItem,
-                                child: Text(dropDownStringItem));
-                          }).toList(),
-                          onChanged: (String value1) {
-                            setState(() {
-                              this.currentItem2 = value1;
-                            });
-                          },
-                          value: currentItem2,
-                        ))),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: mar - 5.0, bottom: mar - 5.0, left: mar, right: mar),
+                                child: Text(dropDownStringItem),
+                              );
+                            }).toList(),
+                            onChanged: (String newValueSelected) {
+                              setState(() {
+                                this.currentItem2 = newValueSelected;
+                              });
+                            },
+                            value: currentItem2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            Row(children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.03,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: MediaQuery.of(context).size.height * 0.06,
+                child: Align(
+                  alignment: Alignment.center,
                   child: TextFormField(
                     controller: valueController,
                     keyboardType: TextInputType.number,
@@ -112,60 +137,74 @@ class _Tempe extends State<Temp> {
                           fontSize: 13.00,
                         ),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
+                            borderRadius: BorderRadius.circular(20.0))),
                   ),
                 ),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: mar - 5.0,
-                        bottom: mar - 5.0,
-                        left: mar,
-                        right: mar),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: RaisedButton(
-                                color: Colors.black,
-                                elevation: 6.00,
-                                child: Text(
-                                  "Calculate",
-                                  style: TextStyle(color: Colors.white),
-                                  textScaleFactor: 1.5,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    if (formKey.currentState.validate()) {
-                                      calculation();
-                                    }
-                                  });
-                                })),
-                        Container(
-                          width: mar - 5.0,
-                        ),
-                        Expanded(
-                            child: RaisedButton(
-                                color: Colors.white,
-                                elevation: 6.00,
-                                child: Text(
-                                  "Reset",
-                                  style: TextStyle(color: Colors.black),
-                                  textScaleFactor: 1.5,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    resetFunction();
-                                  });
-                                })),
-                      ],
-                    )),
-                Padding(
-                  padding: EdgeInsets.all(mar - 5.0),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.04,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: MediaQuery.of(context).size.height * 0.06,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(width: 1, color: Colors.grey),
+                  color: Colors.transparent,
+                ),
+                child: Align(
+                  alignment: Alignment.center,
                   child: Text(this.result),
-                )
-              ],
-            )),
-      ),
-    );
+                ),
+              )
+            ]),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            Row(children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.06,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.38,
+                child: RaisedButton(
+                    color: Colors.black,
+                    elevation: 6.00,
+                    child: Text(
+                      "Calculate",
+                      style: TextStyle(color: Colors.white),
+                      textScaleFactor: 1.5,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (formKey.currentState.validate()) {
+                          calculation();
+                        }
+                      });
+                    }),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.12,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.38,
+                child: RaisedButton(
+                    color: Colors.white,
+                    elevation: 6.00,
+                    child: Text(
+                      "Reset",
+                      style: TextStyle(color: Colors.black),
+                      textScaleFactor: 1.5,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        resetFunction();
+                      });
+                    }),
+              ),
+            ])
+          ]),
+        ));
   }
 
   Widget getImage() {
@@ -188,35 +227,35 @@ class _Tempe extends State<Temp> {
     if (currentItem1 == "celsius") {
       if (currentItem2 == "kelvin") {
         total = value + 273.15;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       } else if (currentItem2 == "fahrenheit") {
         total = (value * 1.8) + 32;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       } else {
         total = value;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       }
     } else if (currentItem1 == "kelvin") {
       if (currentItem2 == "celsius") {
         total = value - 273.15;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       } else if (currentItem2 == "fahrenheit") {
         total = (value * 1.8) - 459.67;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       } else {
         total = value;
-        result = "Temperature is $total $currentItem2";
+        result = "T$total";
       }
     } else if (currentItem1 == "fahrenheit") {
       if (currentItem2 == "kelvin") {
         total = (value + 459.67) / 1.8;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       } else if (currentItem2 == "celsius") {
         total = (value - 32) / 1.8;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       } else {
         total = value;
-        result = "Temperature is $total $currentItem2";
+        result = "$total";
       }
     } else {
       result = "INVALID UNITS";
